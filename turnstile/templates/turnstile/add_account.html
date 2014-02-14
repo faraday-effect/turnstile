@@ -1,0 +1,12 @@
+{% extends "turnstile/base.html" %}
+
+{% block title %}Add Account{% endblock %}
+
+{% block content %}
+<h1>Add Account</h1>
+
+<form  method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Add Account" />
+</form>
+{% endblock %}

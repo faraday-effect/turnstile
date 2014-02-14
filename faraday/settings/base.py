@@ -1,5 +1,5 @@
 from unipath import Path
-PROJECT_DIR = Path(__file__).ancestor(2)
+PROJECT_DIR = Path(__file__).ancestor(3)
 
 SECRET_KEY = '=+t8w&x0y*!yzpyy1i@m!@!g%%cfxx^byq_7&s5i8f#7llg60v'
 
@@ -10,6 +10,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'turnstile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -31,3 +33,6 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = PROJECT_DIR.child("uploads")
+MEDIA_URL = '/uploads/'
