@@ -1,0 +1,25 @@
+{% extends "turnstile/base.html" %}
+
+{% block title %}Submission{% endblock %}
+
+{% block content %}
+<h1>Existing Submissions</h1>
+
+<ul>
+  {% for submission in submissions %}
+  <li>
+    {{ submission }} from {{ submission.submitted_at }}
+    <a href="{% url 'turnstile_submission_delete' submission_id=submission.pk %}">Delete</a>
+  </li>
+  {% empty %}
+  <li>None</li>
+  {% endfor %}
+</ul>
+
+<h1>New Submission</h1>
+
+<form enctype="multipart/form-data" method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit Homework" />
+</form>
+{% endblock %}
