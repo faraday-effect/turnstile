@@ -1,0 +1,1 @@
+Turnstyle is a simple Django app that lets students submit homework assignments.
