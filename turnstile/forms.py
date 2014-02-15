@@ -8,19 +8,21 @@ class LoginForm(forms.Form):
 
 
 class AccountForm(forms.Form):
-    full_name = forms.CharField(max_length=80)
-    user_name = forms.CharField(max_length=20)
+    first_name = forms.CharField(max_length=40)
+    last_name = forms.CharField(max_length=40)
+    email = forms.EmailField()
+    username = forms.CharField(max_length=20)
     password = forms.CharField(max_length=20, widget=forms.PasswordInput())
     repeat_password = forms.CharField(max_length=20, widget=forms.PasswordInput())
 
-    def clean_user_name(self):
-        """Make sure no user with the same user_name."""
-        user = self.cleaned_data["user_name"]
+    def clean_username(self):
+        """Make sure no user with the same username."""
+        user = self.cleaned_data["username"]
         try:
-            Student.objects.get(user_name=user)
-        except Student.DoesNotExist:
+            User.objects.get(username=user)
+        except User.DoesNotExist:
             return user
-        raise forms.ValidationError("Already a student with that user name")
+        raise forms.ValidationError("Already a user with that user name")
 
     def clean_repeat_password(self):
         """Make sure the passwords match one another."""

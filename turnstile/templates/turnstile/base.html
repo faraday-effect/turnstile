@@ -12,6 +12,15 @@
       {% endfor %}
     </ul>
     {% endif %}
+
+    {% if user.is_authenticated %}
+    <p>Logged in as {{ user.get_full_name }}
+      (<a href="{% url 'turnstile_logout' %}">Log out</a>)
+    </p>
+    {% else %}
+    <p>Not logged in (<a href="{% url 'turnstile_login' %}">Log in</a>)</p>
+    {% endif %}
+
     {% block content %}
     <p>YOUR CONTENT HERE</p>
     {% endblock %}

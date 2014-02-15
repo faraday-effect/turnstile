@@ -36,3 +36,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = PROJECT_DIR.child("uploads")
 MEDIA_URL = '/uploads/'
+
+LOGIN_URL = 'turnstile_login'
