@@ -5,18 +5,22 @@
 {% block content %}
 <h1>Assignments</h1>
 
-<table>
-  <tr>
-    <th>Course</th>
-    <th>Assignment</th>
-    <th>Due Date</th>
-  </tr>
-  {% for hw in all_hw %}
-  <tr>
-    <td>{{ hw.course }}</td>
-    <td><a href="{% url 'turnstile_submit' assignment_id=hw.id %}">{{ hw.name }}</a></td>
-    <td>{{ hw.due_date }}</td>
-  </tr>
-  {% endfor %}
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Assignment</th>
+      <th>Due Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hw in all_hw %}
+    <tr>
+      <td>{{ hw.course }}</td>
+      <td><a href="{% url 'turnstile_submit' assignment_id=hw.id %}">{{ hw.name }}</a></td>
+      <td>{{ hw.due_date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% endblock %}
