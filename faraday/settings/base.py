@@ -1,3 +1,5 @@
+from django.contrib import messages
+
 from unipath import Path
 PROJECT_DIR = Path(__file__).ancestor(3)
 
@@ -38,3 +40,9 @@ MEDIA_ROOT = PROJECT_DIR.child("uploads")
 MEDIA_URL = '/uploads/'
 
 LOGIN_URL = 'turnstile_login'
+
+MESSAGE_TAGS = {
+    messages.constants.ERROR: 'danger'    # Fix up for Bootstrap.
+}
+
+

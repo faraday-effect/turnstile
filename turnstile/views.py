@@ -20,7 +20,7 @@ def login(request):
                 messages.success(request, "Login successful")
                 return redirect('turnstile_assignments')
             else:
-                messages.warning(request, "Invalid login; try again")
+                messages.error(request, "Invalid login; try again")
     else:
         form = LoginForm()
     return render(request, 'turnstile/login.html', { 'form': form })
@@ -47,7 +47,7 @@ def add_account(request):
                 student.groups.add(student_group)
                 messages.success(request, "Account created")
             except Group.DoesNotExist:
-                messages.warning(request, "Couldn't add new student to group")
+                messages.error(request, "Couldn't add new student to group")
 
             return redirect('turnstile_login')
     else:
@@ -64,7 +64,7 @@ def submit(request, assignment_id):
     try:
         assignment = Assignment.objects.get(pk=assignment_id)
     except Assignment.DoesNotExist:
-        messages.warning("Can't find selected assignment")
+        messages.error("Can't find selected assignment")
         return redirect('turnstile_assignments')
 
     submissions = Submission.objects.filter(assignment=assignment)
@@ -79,7 +79,7 @@ def submit(request, assignment_id):
                                           submitted_file=form.cleaned_data['file_name'])
                 messages.success(request, "Homework submitted")
             except User.DoesNotExist:
-                message.warning("Can't find current student")
+                message.error("Can't find current student")
     else:
         form = SubmissionForm()
 
@@ -98,7 +98,7 @@ def delete_submission(request, submission_id):
         messages.success(request, "Submission deleted")
         return redirect('turnstile_submit', assignment_id=assignment.pk)
     except Submission.DoesNotExist:
-        messages.warning(request, "Can't find submission")
+        messages.error(request, "Can't find submission")
         return redirect('turnstile_assignments')
 
 @permission_required('turnstile.view_submissions', raise_exception=True)
