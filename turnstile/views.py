@@ -1,7 +1,8 @@
-from django.contrib import messages
 from django.contrib import auth
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 
 from .forms import *
@@ -40,7 +41,14 @@ def add_account(request):
             student.first_name = form.cleaned_data["first_name"]
             student.last_name = form.cleaned_data["last_name"]
             student.save()
-            messages.success(request, "Account created")
+
+            try:
+                student_group = Group.objects.get(name='Student')
+                student.groups.add(student_group)
+                messages.success(request, "Account created")
+            except Group.DoesNotExist:
+                messages.error(request, "Couldn't add new student to group")
+
             return redirect('turnstile_login')
     else:
         form = AccountForm()
@@ -64,15 +72,14 @@ def submit(request, assignment_id):
     if request.method == 'POST':
         form = SubmissionForm(request.POST, request.FILES)
         if form.is_valid():
-                try:
-                    student = User.objects.get(pk=request.session['student_id'])
-                    submission = Submission(student=student,
-                                            assignment=assignment,
-                                            submitted_file=form.cleaned_data['file_name'])
-                    submission.save()
-                    messages.success(request, "Homework submitted")
-                except User.DoesNotExist:
-                    message.error("Can't find current student")
+            try:
+                print type(request.user), request.user
+                Submission.objects.create(student=request.user,
+                                          assignment=assignment,
+                                          submitted_file=form.cleaned_data['file_name'])
+                messages.success(request, "Homework submitted")
+            except User.DoesNotExist:
+                message.error("Can't find current student")
     else:
         form = SubmissionForm()
 
@@ -93,7 +100,7 @@ def delete_submission(request, submission_id):
         messages.error(request, "Can't find submission")
         return redirect('turnstile_assignments')
 
-@permission_required('turnstile.view_submissions')
+@permission_required('turnstile.view_submissions', raise_exception=True)
 def list_submissions(request):
     submissions = Submission.objects.all()
     return render(request, 'turnstile/submissions.html', { 'submissions': submissions })

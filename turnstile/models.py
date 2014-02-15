@@ -29,7 +29,7 @@ class Assignment(models.Model):
 def submission_path(instance, filename):
     return "submissions/{0}/{1}/{2}/{3}".format(slugify(instance.assignment.course.name),
                                                 slugify(instance.assignment.name),
-                                                slugify(instance.user.full_name),
+                                                slugify(instance.student.get_full_name()),
                                                 filename)
 
 class Submission(models.Model):

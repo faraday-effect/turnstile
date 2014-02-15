@@ -5,20 +5,20 @@
     <title>{% block title %}YOUR TITLE HERE{% endblock %}</title>
   </head>
   <body>
-    {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-
     {% if user.is_authenticated %}
     <p>Logged in as {{ user.get_full_name }}
       (<a href="{% url 'turnstile_logout' %}">Log out</a>)
     </p>
     {% else %}
     <p>Not logged in (<a href="{% url 'turnstile_login' %}">Log in</a>)</p>
+    {% endif %}
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
     {% endif %}
 
     {% block content %}
