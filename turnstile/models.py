@@ -44,7 +44,7 @@ class Submission(models.Model):
     student = models.ForeignKey(Student, related_name='submissions')
     assignment = models.ForeignKey(Assignment, related_name='submissions')
     submitted_at = models.DateTimeField(auto_now=True)
-    submission = models.FileField(upload_to=submission_path)
+    submitted_file = models.FileField(upload_to=submission_path)
 
     def __unicode__(self):
-        return Path(self.submission.url).name
+        return Path(self.submitted_file.url).name

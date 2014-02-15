@@ -8,4 +8,6 @@ urlpatterns = patterns(
     url(r'^assignments/(?P<assignment_id>\d+)/$', 'submit', name='turnstile_submit'),
     url(r'^submission/(?P<submission_id>\d+)/delete$', 'delete_submission',
         name='turnstile_submission_delete'),
+
+    url(r'^submissions/$', 'list_submissions', name='turnstile_list_submissions'),
 )

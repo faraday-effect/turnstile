@@ -37,7 +37,7 @@ def add_account(request):
                               password = make_password(form.cleaned_data["password"]))
             student.save()
             messages.success(request, "Account created")
-            return redirect('turnstile_assignments')
+            return redirect('turnstile_login')
     else:
         form = AccountForm()
     return render(request, 'turnstile/add_account.html', { 'form': form })
@@ -62,7 +62,7 @@ def submit(request, assignment_id):
                     student = Student.objects.get(pk=request.session['student_id'])
                     submission = Submission(student=student,
                                             assignment=assignment,
-                                            submission=form.cleaned_data['file_name'])
+                                            submitted_file=form.cleaned_data['file_name'])
                     submission.save()
                     messages.success(request, "Homework submitted")
                 except Student.DoesNotExist:
@@ -78,7 +78,7 @@ def delete_submission(request, submission_id):
     try:
         submission = Submission.objects.get(pk=submission_id)
         assignment = submission.assignment
-        submission.submission.delete(save=False)
+        submission.submitted_file.delete(save=False)
         submission.delete()
         messages.success(request, "Submission deleted")
         return redirect('turnstile_submit', assignment_id=assignment.pk)
@@ -86,4 +86,6 @@ def delete_submission(request, submission_id):
         messages.error(request, "Can't find submission")
         return redirect('turnstile_assignments')
 
-
+def list_submissions(request):
+    submissions = Submission.objects.all()
+    return render(request, 'turnstile/submissions.html', { 'submissions': submissions })
