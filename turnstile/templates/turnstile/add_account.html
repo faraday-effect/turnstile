@@ -10,7 +10,7 @@
   {{ form.non_field_errors }}
 
   {% for field in form %}
-  <div class="form-group">
+  <div class="form-group {% if field.errors %}has-error{% endif %}">
     <label class="col-sm-2 control-label"
 	   for="{{ field.id_for_label }}">
       {{ field.label }}
@@ -22,7 +22,11 @@
 	     value="{{ field.value|default_if_none:"" }}"
 	     type="{{ field.field.widget.input_type }}" />
     </div>
-    {{ field.errors }}
+    {% if field.errors %}
+    {% for error in field.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+    {% endif %}
   </div>
   {% endfor %}
 
