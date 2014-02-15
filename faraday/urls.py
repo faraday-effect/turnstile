@@ -14,3 +14,7 @@ urlpatterns = patterns('',
 
 # N.B., the 'static' function adds a URL conf that serves MEDIA files when DEBUG is
 # true. When it's falsse, 'static' returns an empty list.
+
+handler403 = 'turnstile.views.handle_403'
+handler404 = 'turnstile.views.handle_404'
+handler500 = 'turnstile.views.handle_500'

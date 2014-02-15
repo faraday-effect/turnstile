@@ -105,3 +105,12 @@ def delete_submission(request, submission_id):
 def list_submissions(request):
     submissions = Submission.objects.all()
     return render(request, 'turnstile/submissions.html', { 'submissions': submissions })
+
+def handle_403(request):
+    return render(request, 'turnstile/403-forbidden.html')
+
+def handle_404(request):
+    return render(request, 'turnstile/404-not-found.html')
+
+def handle_500(request):
+    return render(request, 'turnstile/500-internal-server-error.html')

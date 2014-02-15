@@ -1,0 +1,10 @@
+<div class="form-group {% if errors %}has-error{% endif %}">
+  <label class="col-sm-2 control-label" for="{{ label_id }}">{{ label }}</label>
+  <div class="col-sm-4">
+    <input class="form-control" id="{{ label_id }}"
+	   type="{{ type }}" name="{{ name }}" value="{{ value|default_if_none:'' }}" />
+  </div>
+  {% for error in errors %}
+  <span class="help-block">{{ error }}</span>
+  {% endfor %}
+</div>

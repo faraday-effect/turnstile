@@ -1,18 +1,26 @@
 {% extends "turnstile/base.html" %}
+{% load bootstrap_helpers %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<h1>Login</h1>
+<h1>Log In</h1>
 
-<p>Already have an account?</p>
-<form  method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Login" />
-</form>
+<p>Log in to your existing account or create a new one.</p>
 
-<p>
-  <a href="{% url 'turnstile_add_account' %}">Add account</a>
-</p>
+<div class="panel panel-default">
+  <div class="panel-heading">Current Users</div>
+  <div class="panel-body">
+    {% bootstrap_form form "Log In" %}
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">New Users</div>
+  <div class="panel-body">
+    <a class="btn btn-primary"
+       href="{% url 'turnstile_add_account' %}">Create your account</a>
+  </div>
+</div>
 
 {% endblock %}

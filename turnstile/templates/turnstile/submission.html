@@ -1,9 +1,10 @@
 {% extends "turnstile/base.html" %}
+{% load bootstrap_helpers %}
 
 {% block title %}Submission{% endblock %}
 
 {% block content %}
-<h1>Submissions for {{ assignment }}</h1>
+<h1>Submissions <small>{{ assignment }} Assignment</small></h1>
 
 <h2>Already Submitted</h2>
 
@@ -36,18 +37,10 @@
 </table>
 
 <h2>Submit More</h2>
+<p>
+  Choose a file to submit.
+  You may submit as many files as necessary for the assignment.
+</p>
 
-<form class="form-horizontal" role="form"
-      method="post" enctype="multipart/form-data">{% csrf_token %}
-  {% for field in form %}
-  <div class="form-group">
-    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-    <input class="form-control"
-	   id="{{ field.id_for_label }}"
-	   name="{{ field.html_name }}"
-	   type="{{ field.field.widget.input_type }}" />
-  </div>
-  {% endfor %}
-  <input type="submit" value="Submit Homework" />
-</form>
+{% bootstrap_multipart_form form "Submit Homework" %}
 {% endblock %}
