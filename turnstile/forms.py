@@ -1,4 +1,5 @@
 from django import forms
+from django.core import validators
 
 from .models import *
 
@@ -11,7 +12,8 @@ class AccountForm(forms.Form):
     first_name = forms.CharField(max_length=40)
     last_name = forms.CharField(max_length=40)
     email = forms.EmailField()
-    username = forms.CharField(max_length=20)
+    username = forms.CharField(max_length=20,
+                               validators=[validators.validate_slug])
     password = forms.CharField(max_length=20, widget=forms.PasswordInput())
     repeat_password = forms.CharField(max_length=20, widget=forms.PasswordInput())
 
