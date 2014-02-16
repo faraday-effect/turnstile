@@ -45,7 +45,7 @@ def add_account(request):
             try:
                 student_group = Group.objects.get(name='Student')
                 student.groups.add(student_group)
-                messages.success(request, "Account created")
+                messages.success(request, "Account created; please log in")
             except Group.DoesNotExist:
                 messages.error(request, "Couldn't add new student to group")
 

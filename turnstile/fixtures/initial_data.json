@@ -1,0 +1,70 @@
+[
+{
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Student", 
+        "permissions": [
+            [
+                "add_submission", 
+                "turnstile", 
+                "submission"
+            ], 
+            [
+                "change_submission", 
+                "turnstile", 
+                "submission"
+            ], 
+            [
+                "delete_submission", 
+                "turnstile", 
+                "submission"
+            ]
+        ]
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Teacher", 
+        "permissions": [
+            [
+                "add_assignment", 
+                "turnstile", 
+                "assignment"
+            ], 
+            [
+                "change_assignment", 
+                "turnstile", 
+                "assignment"
+            ], 
+            [
+                "delete_assignment", 
+                "turnstile", 
+                "assignment"
+            ], 
+            [
+                "add_course", 
+                "turnstile", 
+                "course"
+            ], 
+            [
+                "change_course", 
+                "turnstile", 
+                "course"
+            ], 
+            [
+                "delete_course", 
+                "turnstile", 
+                "course"
+            ], 
+            [
+                "view_submissions", 
+                "turnstile", 
+                "submission"
+            ]
+        ]
+    }
+}
+]
