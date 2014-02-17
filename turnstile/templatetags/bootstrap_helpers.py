@@ -8,7 +8,7 @@ def bootstrap_field(field):
              'label': field.label,
              'errors': field.errors,
              'name': field.html_name,
-             'type': field.field.widget.input_type,
+#             'type': field.field.widget.input_type,
              'value': field.value }
 
 @register.inclusion_tag('bootstrap_form.html')

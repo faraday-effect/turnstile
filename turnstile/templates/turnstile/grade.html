@@ -1,4 +1,5 @@
 {% extends "turnstile/base.html" %}
+{% load bootstrap_helpers %}
 
 {% block title %}Grade{% endblock %}
 
@@ -32,4 +33,9 @@
     </tr>
   </tbody>
 </table>
+
+<h2>Feedback</h2>
+
+{% bootstrap_form form "Submit Feedback" %}
+
 {% endblock %}

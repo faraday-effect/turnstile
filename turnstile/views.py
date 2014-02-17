@@ -114,7 +114,9 @@ def grade_submission(request, submission_id):
         messages.error(request, "Can't find submission")
         return redirect('ts-list-submissions')
 
-    return render(request, 'turnstile/grade.html', { 'submission': submission })
+    form = FeedbackForm(Comment.objects.filter(assignment=submission.assignment))
+    return render(request, 'turnstile/grade.html', { 'form': form, 'submission': submission })
+
 
 def handle_403(request):
     return render(request, 'turnstile/403-forbidden.html')

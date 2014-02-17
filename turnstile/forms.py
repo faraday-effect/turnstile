@@ -37,3 +37,14 @@ class AccountForm(forms.Form):
 
 class SubmissionForm(forms.Form):
     file_name = forms.FileField()
+
+
+
+class FeedbackForm(forms.ModelForm):
+    def __init__(self, queryset, *args, **kwargs):
+        super(FeedbackForm, self).__init__(*args, **kwargs)
+        self.fields['comments'] = forms.ModelMultipleChoiceField(queryset=queryset,
+                                                                 widget=forms.CheckboxSelectMultiple())
+    class Meta:
+        model = Feedback
+        fields = ('comments', 'extra_comment')
