@@ -25,6 +25,8 @@
 	{% for attachment in submission.attachments.all %}
 	<a class="btn btn-primary btn-xs"
 	   href="{{ attachment.uploaded_file.url }}">{{ attachment }}</a> ({{ attachment.uploaded_at }})
+	{% empty %}
+	<span class="label label-danger">None</span>
 	{% endfor %}
       </td>
     </tr>

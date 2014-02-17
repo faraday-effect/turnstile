@@ -19,7 +19,7 @@
     {% for assignment in elt.assignments %}
     <tr>
       <td>
-	<a href="{% url 'turnstile_submit' assignment_id=assignment.id %}">{{ assignment.name }}</a>
+	<a href="{% url 'ts-submit-attachments' assignment_id=assignment.id %}">{{ assignment.name }}</a>
       </td>
       <td>{{ assignment.due_date }}</td>
     </tr>

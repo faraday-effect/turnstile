@@ -23,7 +23,7 @@
       <td>{{ attachment }}</td>
       <td>
 	<a class="btn btn-danger btn-xs"
-	   href="{% url 'turnstile_attachment_delete' attachment_id=attachment.pk %}">Delete</a>
+	   href="{% url 'ts-delete-attachment' attachment_id=attachment.pk %}">Delete</a>
       </td>
     </tr>
     {% empty %}

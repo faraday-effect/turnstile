@@ -30,11 +30,6 @@ def logout(request):
     messages.success(request, "Logged out")
     return redirect('turnstile_login')
 
-@login_required
-def home(request):
-    submissions = Submission.objects.filter(student=request.user)
-    return render(request, 'turnstile/home.html', { 'submissions': submissions })
-
 def add_account(request):
     """Add a student account."""
     if request.method == 'POST':
@@ -60,12 +55,17 @@ def add_account(request):
     return render(request, 'turnstile/add_account.html', { 'form': form })
 
 @login_required
-def assignments(request):
+def home(request):
+    submissions = Submission.objects.filter(student=request.user)
+    return render(request, 'turnstile/home.html', { 'submissions': submissions })
+
+@login_required
+def list_assignments(request):
     return render(request, 'turnstile/assignments.html',
                   { 'by_course': Assignment.all_by_course() })
 
 @login_required
-def submit(request, assignment_id):
+def submit_attachments(request, assignment_id):
     try:
         assignment = Assignment.objects.get(pk=assignment_id)
     except Assignment.DoesNotExist:

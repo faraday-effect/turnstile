@@ -15,6 +15,7 @@
       <th>Assignment</th>
       <th>Due</th>
       <th>Submitted</th>
+      <th>Files</th>
     </tr>
   </thead>
   <tbody>
@@ -22,11 +23,18 @@
     <tr>
       <td>{{ submission.assignment.course }}</td>
       <td>
-	<a href="{% url 'turnstile_submit' assignment_id=submission.assignment.pk %}">
+	<a href="{% url 'ts-submit-attachments' assignment_id=submission.assignment.pk %}">
 	  {{ submission.assignment }}</a>
       </td>
       <td>{{ submission.assignment.due_date }}</td>
       <td>{{ submission.created_at }}</td>
+      <td>
+      {% for attachment in submission.attachments.all %}
+      {{ attachment }}{% if not forloop.last %}, {% endif %}
+      {% empty %}
+      <span class="label label-danger">No files!</span>
+      {% endfor %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
@@ -34,7 +42,7 @@
 
 {% else %}
 <p>
-  You have yet to <a href="{% url 'turnstile_assignments' %}">submit an assignment</a>.
+  You have yet to <a href="{% url 'ts-list-assignments' %}">submit an assignment</a>.
 </p>
 {% endif %}
 
