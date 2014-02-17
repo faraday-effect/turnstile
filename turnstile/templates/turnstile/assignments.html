@@ -5,22 +5,26 @@
 {% block content %}
 <h1>Assignments</h1>
 
+{% for elt in by_course %}
+<h2>{{ elt.course }}</h2>
+
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
-      <th>Course</th>
       <th>Assignment</th>
       <th>Due Date</th>
     </tr>
   </thead>
   <tbody>
-    {% for hw in all_hw %}
+    {% for assignment in elt.assignments %}
     <tr>
-      <td>{{ hw.course }}</td>
-      <td><a href="{% url 'turnstile_submit' assignment_id=hw.id %}">{{ hw.name }}</a></td>
-      <td>{{ hw.due_date }}</td>
+      <td>
+	<a href="{% url 'turnstile_submit' assignment_id=assignment.id %}">{{ assignment.name }}</a>
+      </td>
+      <td>{{ assignment.due_date }}</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+{% endfor %}
 {% endblock %}

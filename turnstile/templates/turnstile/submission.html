@@ -4,7 +4,7 @@
 {% block title %}Submission{% endblock %}
 
 {% block content %}
-<h1>Submissions <small>{{ assignment }} Assignment</small></h1>
+<h1>Submissions <small>{{ assignment }} for {{ assignment.course.number }}</small></h1>
 
 <h2>Already Submitted</h2>
 
@@ -17,15 +17,13 @@
     </tr>
   </thead>
   <tbody>
-    {% for submission in submissions %}
+    {% for attachment in submission.attachments.all %}
     <tr>
-      <td>{{ submission.submitted_at }}</td>
-      <td>{{ submission }}</td>
+      <td>{{ attachment.uploaded_at }}</td>
+      <td>{{ attachment }}</td>
       <td>
 	<a class="btn btn-danger btn-xs"
-	   href="{% url 'turnstile_submission_delete' submission_id=submission.pk %}">
-	  Delete
-	</a>
+	   href="{% url 'turnstile_attachment_delete' attachment_id=attachment.pk %}">Delete</a>
       </td>
     </tr>
     {% empty %}
@@ -42,5 +40,5 @@
   You may submit as many files as necessary for the assignment.
 </p>
 
-{% bootstrap_multipart_form form "Submit Homework" %}
+{% bootstrap_multipart_form form "Submit File" %}
 {% endblock %}

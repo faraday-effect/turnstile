@@ -7,6 +7,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+    url(r'^$', 'turnstile.views.home'),
+
     url(r'^turnstile/', include('turnstile.urls')),
     url(r'^admin/', include(admin.site.urls)),
 

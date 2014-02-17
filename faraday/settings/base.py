@@ -44,5 +44,3 @@ LOGIN_URL = 'turnstile_login'
 MESSAGE_TAGS = {
     messages.constants.ERROR: 'danger'    # Fix up for Bootstrap.
 }
-
-

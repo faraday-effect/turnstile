@@ -3,22 +3,38 @@
 {% block title %}Submissions{% endblock %}
 
 {% block content %}
-<table>
-  <tr>
-    <th>Student</th>
-    <th>Assignment</th>
-    <th>Submission</th>
-  </tr>
-  {% for submission in submissions %}
-  <tr>
-    <td>{{ submission.student }}</td>
-    <td>{{ submission.assignment }}</td>
-    <td><a href="{{ submission.submitted_file.url }}">{{ submission.submitted_file }}</a></td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td colspan="3">None</td>
-  </tr>
-  {% endfor %}
-</ul>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Assignment</th>
+      <th>Student</th>
+      <th>Submitted</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for submission in submissions %}
+    <tr>
+      <td>{{ submission.assignment.course.number }}</td>
+      <td>{{ submission.assignment }}</td>
+      <td>{{ submission.student.get_full_name }}</td>
+      <td>{{ submission.created_at }}</td>
+
+      {% if submission.graded %}
+      <td>Graded</td>
+      {% else %}
+      <td>
+	<a class="btn btn-primary btn-xs"
+	   href="{% url 'turnstile_grade_submission' submission_id=submission.pk %}">Grade</a>
+      </td>
+      {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3">None</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

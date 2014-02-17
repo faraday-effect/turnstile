@@ -1,0 +1,33 @@
+{% extends "turnstile/base.html" %}
+
+{% block title %}Grade{% endblock %}
+
+{% block content %}
+<h1>{{ submission }}</h1>
+
+<table class="table table-bordered table-hover">
+  <tbody>
+    <tr>
+      <th>Student</th>
+      <td>{{ submission.student.get_full_name }}</td>
+    </tr>
+    <tr>
+      <th>Assignment</th>
+      <td>{{ submission.assignment }}</td>
+    </tr>
+    <tr>
+      <th>Submitted</th>
+      <td>{{ submission.created_at }}</td>
+    </tr>
+    <tr>
+      <th>Attachment{{ submission.attachments.count|pluralize }}</th>
+      <td>
+	{% for attachment in submission.attachments.all %}
+	<a class="btn btn-primary btn-xs"
+	   href="{{ attachment.uploaded_file.url }}">{{ attachment }}</a> ({{ attachment.uploaded_at }})
+	{% endfor %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}

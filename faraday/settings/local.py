@@ -10,3 +10,5 @@ DATABASES = {
         'NAME': PROJECT_DIR.child("db.sqlite3")
     }
 }
+
+INSTALLED_APPS += ('debug_toolbar',)

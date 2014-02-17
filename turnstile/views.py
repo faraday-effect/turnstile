@@ -18,7 +18,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.success(request, "Login successful")
-                return redirect('turnstile_assignments')
+                return redirect('turnstile_home')
             else:
                 messages.error(request, "Invalid login; try again")
     else:
@@ -29,6 +29,11 @@ def logout(request):
     auth.logout(request)
     messages.success(request, "Logged out")
     return redirect('turnstile_login')
+
+@login_required
+def home(request):
+    submissions = Submission.objects.filter(student=request.user)
+    return render(request, 'turnstile/home.html', { 'submissions': submissions })
 
 def add_account(request):
     """Add a student account."""
@@ -56,8 +61,8 @@ def add_account(request):
 
 @login_required
 def assignments(request):
-    all_hw = Assignment.objects.all()
-    return render(request, 'turnstile/assignments.html', { 'all_hw': all_hw })
+    return render(request, 'turnstile/assignments.html',
+                  { 'by_course': Assignment.all_by_course() })
 
 @login_required
 def submit(request, assignment_id):
@@ -67,44 +72,48 @@ def submit(request, assignment_id):
         messages.error("Can't find selected assignment")
         return redirect('turnstile_assignments')
 
-    submissions = Submission.objects.filter(assignment=assignment)
+    submission, created = Submission.objects.get_or_create(student=request.user,
+                                                           assignment=assignment)
 
     if request.method == 'POST':
         form = SubmissionForm(request.POST, request.FILES)
         if form.is_valid():
-            try:
-                print type(request.user), request.user
-                Submission.objects.create(student=request.user,
-                                          assignment=assignment,
-                                          submitted_file=form.cleaned_data['file_name'])
-                messages.success(request, "Homework submitted")
-            except User.DoesNotExist:
-                message.error("Can't find current student")
+            Attachment.objects.create(submission=submission,
+                                      uploaded_file=form.cleaned_data['file_name'])
+            messages.success(request, "File submitted")
     else:
         form = SubmissionForm()
 
     return render(request, 'turnstile/submission.html',
                   { 'form': form,
                     'assignment': assignment,
-                    'submissions': submissions })
+                    'submission': submission })
 
 @login_required
-def delete_submission(request, submission_id):
+def delete_attachment(request, attachment_id):
     try:
-        submission = Submission.objects.get(pk=submission_id)
-        assignment = submission.assignment
-        submission.submitted_file.delete(save=False)
-        submission.delete()
-        messages.success(request, "Submission deleted")
-        return redirect('turnstile_submit', assignment_id=assignment.pk)
-    except Submission.DoesNotExist:
-        messages.error(request, "Can't find submission")
-        return redirect('turnstile_assignments')
+        attachment = Attachment.objects.get(pk=attachment_id)
+        submission = attachment.submission
+        attachment.uploaded_file.delete(save=False)
+        attachment.delete()
+        messages.success(request, "Attachment deleted")
+    except Attachment.DoesNotExist:
+        messages.error(request, "Can't find attached file")
+    return redirect('turnstile_submit', submission_id=submission.pk)
 
 @permission_required('turnstile.view_submissions', raise_exception=True)
 def list_submissions(request):
-    submissions = Submission.objects.all()
+    submissions = Submission.objects.all().order_by('created_at')
     return render(request, 'turnstile/submissions.html', { 'submissions': submissions })
+
+@permission_required('turnstile.view_submissions', raise_exception=True)
+def grade_submission(request, submission_id):
+    try:
+        submission = Submission.objects.get(pk=submission_id)
+        return render(request, 'turnstile/grade.html', { 'submission': submission })
+    except Submission.DoesNotExist:
+        messages.error(request, "Can't find submission")
+        return redirect('turnstile_list_submissions')
 
 def handle_403(request):
     return render(request, 'turnstile/403-forbidden.html')

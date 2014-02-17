@@ -1,0 +1,41 @@
+{% extends "turnstile/base.html" %}
+
+{% block title %}Turnstile Home{% endblock %}
+
+{% block content %}
+<h1>Welcome</h1>
+
+{% if submissions %}
+<p>You have submitted these assignments.</p>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Assignment</th>
+      <th>Due</th>
+      <th>Submitted</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for submission in submissions %}
+    <tr>
+      <td>{{ submission.assignment.course }}</td>
+      <td>
+	<a href="{% url 'turnstile_submit' assignment_id=submission.assignment.pk %}">
+	  {{ submission.assignment }}</a>
+      </td>
+      <td>{{ submission.assignment.due_date }}</td>
+      <td>{{ submission.created_at }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<p>
+  You have yet to <a href="{% url 'turnstile_assignments' %}">submit an assignment</a>.
+</p>
+{% endif %}
+
+{% endblock %}
