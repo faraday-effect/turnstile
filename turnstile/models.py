@@ -87,3 +87,21 @@ class Attachment(models.Model):
 
     def __unicode__(self):
         return Path(self.uploaded_file.url).name
+
+
+class Comment(models.Model):
+    assignment = models.ForeignKey(Assignment, related_name='comments')
+    text = models.TextField()
+
+    def __unicode__(self):
+        return self.text
+
+
+class Feedback(models.Model):
+    submission = models.ForeignKey(Submission, related_name='feedback')
+    comments = models.ManyToManyField(Comment)
+    extra_comment = models.TextField()
+
+    class Meta:
+        verbose_name_plural = 'feedback'
+

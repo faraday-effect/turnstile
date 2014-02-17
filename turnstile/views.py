@@ -18,7 +18,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.success(request, "Login successful")
-                return redirect('turnstile_home')
+                return redirect('ts-home')
             else:
                 messages.error(request, "Invalid login; try again")
     else:
@@ -28,7 +28,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     messages.success(request, "Logged out")
-    return redirect('turnstile_login')
+    return redirect('ts-login')
 
 def add_account(request):
     """Add a student account."""
@@ -49,7 +49,7 @@ def add_account(request):
             except Group.DoesNotExist:
                 messages.error(request, "Couldn't add new student to group")
 
-            return redirect('turnstile_login')
+            return redirect('ts-login')
     else:
         form = AccountForm()
     return render(request, 'turnstile/add_account.html', { 'form': form })
@@ -70,7 +70,7 @@ def submit_attachments(request, assignment_id):
         assignment = Assignment.objects.get(pk=assignment_id)
     except Assignment.DoesNotExist:
         messages.error("Can't find selected assignment")
-        return redirect('turnstile_assignments')
+        return redirect('ts-list-assignments')
 
     submission, created = Submission.objects.get_or_create(student=request.user,
                                                            assignment=assignment)
@@ -99,7 +99,7 @@ def delete_attachment(request, attachment_id):
         messages.success(request, "Attachment deleted")
     except Attachment.DoesNotExist:
         messages.error(request, "Can't find attached file")
-    return redirect('turnstile_submit', submission_id=submission.pk)
+    return redirect('ts-submit-attachments', submission_id=submission.pk)
 
 @permission_required('turnstile.view_submissions', raise_exception=True)
 def list_submissions(request):
@@ -110,10 +110,11 @@ def list_submissions(request):
 def grade_submission(request, submission_id):
     try:
         submission = Submission.objects.get(pk=submission_id)
-        return render(request, 'turnstile/grade.html', { 'submission': submission })
     except Submission.DoesNotExist:
         messages.error(request, "Can't find submission")
-        return redirect('turnstile_list_submissions')
+        return redirect('ts-list-submissions')
+
+    return render(request, 'turnstile/grade.html', { 'submission': submission })
 
 def handle_403(request):
     return render(request, 'turnstile/403-forbidden.html')
